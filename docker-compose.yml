@@ -1,0 +1,49 @@
+services:
+
+  db:
+    image: postgres:16
+    container_name: ltc-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ltc_ai_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+
+  backend:
+    build:
+      context: .                    # 🔥 MUST BE ROOT
+      dockerfile: backend/Dockerfile
+    container_name: ltc-backend
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    volumes:
+      - chroma_data:/data/chroma
+
+
+  frontend:
+    build:
+      context: ./frontend           # ✅ only frontend folder
+      dockerfile: Dockerfile
+    container_name: ltc-frontend
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      - backend
+    ports:
+      - "5173:5173"
+
+
+volumes:
+  postgres_data:
+  chroma_data:
