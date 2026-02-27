@@ -175,7 +175,7 @@ uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000
 Backend will run on:
 
 ```
-http://localhost:8000
+http://localhost:8000/docs
 ```
 
 ---
@@ -203,7 +203,7 @@ npm run dev
 Frontend will run on:
 
 ```
-http://localhost:5173
+http://localhost:3000
 ```
 
 (or the port shown in terminal)
